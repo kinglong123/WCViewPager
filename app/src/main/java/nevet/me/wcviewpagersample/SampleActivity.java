@@ -14,6 +14,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -27,6 +28,8 @@ public class SampleActivity extends AppCompatActivity {
 
     private ViewPager viewPager;
     private TabLayout tabs;
+    ProgressBar mProgressBar;
+    ProgressBar mProgressBar1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +37,9 @@ public class SampleActivity extends AppCompatActivity {
         setContentView(R.layout.activity_sample);
 
         viewPager = (ViewPager) findViewById(R.id.viewpager);
+        mProgressBar = (ProgressBar) findViewById(R.id.progressBar1);
+
+        mProgressBar1 = (ProgressBar) findViewById(R.id.progressBar2);
 
         // demo tab selection without scrolling
         tabs = (TabLayout) findViewById(R.id.tablayout);
@@ -59,6 +65,31 @@ public class SampleActivity extends AppCompatActivity {
         // Create global configuration and initialize ImageLoader with this config
 //        ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(this).build();
 //        ImageLoader.getInstance().init(config);
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset,
+                    int positionOffsetPixels) {
+
+                System.out.println("position11111:"+position);
+                System.out.println("positionOffset11111:"+positionOffset);
+                if(position ==0){
+                    mProgressBar1.setProgress((int) (positionOffset*100));
+                    mProgressBar.setProgress((int) ((1-positionOffset)*100));
+                }
+
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
 
     }
 

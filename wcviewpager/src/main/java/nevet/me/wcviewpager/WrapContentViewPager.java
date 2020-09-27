@@ -189,6 +189,7 @@ public class WrapContentViewPager extends ViewPager {
         return view.getMeasuredHeight();
     }
 
+    //为什么不能主页获取呢？viewpager里面的view未知是会变化的
 //    protected View getViewAtPosition(int position) {
 //
 //        System.out.println("....1111111111111111111getViewAtPosition:"+position);
