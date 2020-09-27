@@ -23,40 +23,35 @@ package nevet.me.wcviewpager;
  * THE SOFTWARE.
  */
 
-import android.support.v4.view.PagerAdapter;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
 import android.util.SparseArray;
-import android.view.View;
 import android.view.ViewGroup;
 
 /**
  * Simple implementation of @see ObjectAtPositionInterface can be extended by any custom adapter
  */
-public abstract class ObjectAtPositionPagerAdapter extends PagerAdapter implements ObjectAtPositionInterface {
+public abstract class ObjectAtPositionFragmentPagerAdapter extends FragmentPagerAdapter implements ObjectAtPositionInterface {
     protected SparseArray<Object> objects = new SparseArray<>();
+
+    public ObjectAtPositionFragmentPagerAdapter(FragmentManager fm) {
+        super(fm);
+    }
 
     @Override
     public final Object instantiateItem(ViewGroup container, int position) {
-        Object object = instantiateItemObject(container, position);
+        Object object = super.instantiateItem(container, position);
         objects.put(position, object);
         return object;
     }
 
-    /**
-     * Replaces @see PagerAdapter#instantiateItem and handles objects tracking for getObjectAtPosition
-     */
-    public abstract Object instantiateItemObject(ViewGroup container, int position);
+
 
     @Override
     public final void destroyItem(ViewGroup container, int position, Object object) {
         objects.remove(position);
-        destroyItemObject(container, position, object);
+        super.destroyItem(container, position, object);
     }
-
-    /**
-     * Replaces @see PagerAdapter#destroyItem and handles objects tracking for getObjectAtPosition
-     */
-    public abstract void destroyItemObject(ViewGroup container, int position, Object object);
-
 
     @Override
     public Object getObjectAtPosition(int position) {
@@ -64,14 +59,5 @@ public abstract class ObjectAtPositionPagerAdapter extends PagerAdapter implemen
         return objects.get(position);
     }
 
-    private View mCurrentView;
 
-    @Override
-    public void setPrimaryItem(ViewGroup container, int position, Object object) {
-        mCurrentView = (View)object;
-    }
-
-    public View getPrimaryItem() {
-        return mCurrentView;
-    }
 }

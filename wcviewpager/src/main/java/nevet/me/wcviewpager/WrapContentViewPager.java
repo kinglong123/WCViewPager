@@ -99,6 +99,15 @@ public class WrapContentViewPager extends ViewPager {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         
         widthMeasuredSpec = widthMeasureSpec;
+
+        int childCount = getChildCount();
+        for (int i = 0; i < childCount; i++) {
+            View childView = getChildAt(i);
+            // 为ScrollerLayout中的每一个子控件测量大小
+            measureChild(childView, widthMeasureSpec, heightMeasureSpec);
+        }
+
+
         int mode = MeasureSpec.getMode(heightMeasureSpec);
 
         if (mode == MeasureSpec.UNSPECIFIED || mode == MeasureSpec.AT_MOST) {
@@ -136,13 +145,25 @@ public class WrapContentViewPager extends ViewPager {
 
     @Override
     public void onPageScrolled(int position, float offset, int positionOffsetPixels) {
+        System.out.println("offset........"+offset);
         super.onPageScrolled(position, offset, positionOffsetPixels);
         // cache scrolled view heights
         if (scrollingPosition != position) {
             scrollingPosition = position;
             // scrolled position is always the left scrolled page
+
+
             View leftView = getViewAtPosition(position);
             View rightView = getViewAtPosition(position + 1);
+
+            if(leftView!=null){
+                System.out.println("leftView11111........"+leftView.getId()+":"+leftView.hashCode());
+            }
+
+            if(rightView!=null){
+                System.out.println("rightView11111........"+rightView.getId()+":"+rightView.hashCode());
+            }
+
             if (leftView != null && rightView != null) {
                 leftHeight = measureViewHeight(leftView);
                 rightHeight = measureViewHeight(rightView);
@@ -168,13 +189,28 @@ public class WrapContentViewPager extends ViewPager {
         return view.getMeasuredHeight();
     }
 
+//    protected View getViewAtPosition(int position) {
+//
+//        System.out.println("....1111111111111111111getViewAtPosition:"+position);
+//        if(getAdapter() != null) {
+//            if (position < getChildCount()) {
+//                View child = getChildAt(position);
+//                return child;
+//            }
+//        }
+//        return null;
+//    }
+
     protected View getViewAtPosition(int position) {
         if(getAdapter() != null) {
+            System.out.println("....1111111111111111111:"+position);
             Object objectAtPosition = ((ObjectAtPositionInterface) getAdapter()).getObjectAtPosition(position);
             if (objectAtPosition != null) {
                 for (int i = 0; i < getChildCount(); i++) {
                     View child = getChildAt(i);
+//                    System.out.println("....111111111111122222:"+i);
                     if (child != null && getAdapter().isViewFromObject(child, objectAtPosition)) {
+                        System.out.println("....11111111111113333:"+i);
                         return child;
                     }
                 }

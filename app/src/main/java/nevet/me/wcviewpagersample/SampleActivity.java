@@ -1,8 +1,12 @@
 package nevet.me.wcviewpagersample;
 
+import com.nostra13.universalimageloader.core.ImageLoader;
+
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
@@ -12,12 +16,10 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
-
 import java.util.ArrayList;
 import java.util.Random;
 
+import nevet.me.wcviewpager.ObjectAtPositionFragmentPagerAdapter;
 import nevet.me.wcviewpager.ObjectAtPositionPagerAdapter;
 
 
@@ -55,8 +57,8 @@ public class SampleActivity extends AppCompatActivity {
         initTextViewsAdapter();
 
         // Create global configuration and initialize ImageLoader with this config
-        ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(this).build();
-        ImageLoader.getInstance().init(config);
+//        ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(this).build();
+//        ImageLoader.getInstance().init(config);
 
     }
 
@@ -116,17 +118,56 @@ public class SampleActivity extends AppCompatActivity {
     }
 
     private void initTextViewsAdapter() {
-        ArrayList<String> stringArrayList = new ArrayList<String>();
-        stringArrayList.add(getString(R.string.lorem_short));
-        stringArrayList.add(getString(R.string.lorem_medium));
-        stringArrayList.add(getString(R.string.lorem_long));
-        stringArrayList.add(getString(R.string.lorem_medium));
-        stringArrayList.add(getString(R.string.lorem_short));
+//        ArrayList<String> stringArrayList = new ArrayList<String>();
+//        stringArrayList.add(getString(R.string.lorem_short));
+//        stringArrayList.add(getString(R.string.lorem_medium));
+//        stringArrayList.add(getString(R.string.lorem_long));
+//        stringArrayList.add(getString(R.string.lorem_medium));
+//        stringArrayList.add(getString(R.string.lorem_short));
+//        TextViewPagerAdapter adapter = new TextViewPagerAdapter(stringArrayList);
+//        viewPager.setAdapter(adapter);
+//        tabs.setupWithViewPager(viewPager);
 
-        TextViewPagerAdapter adapter = new TextViewPagerAdapter(stringArrayList);
-        viewPager.setAdapter(adapter);
+
+
+        TextViewPagerAdapter1 adapter1  = new TextViewPagerAdapter1(getSupportFragmentManager());
+
+        viewPager.setAdapter(adapter1);
         tabs.setupWithViewPager(viewPager);
     }
+
+
+
+
+    public class TextViewPagerAdapter1 extends ObjectAtPositionFragmentPagerAdapter {
+
+
+        public TextViewPagerAdapter1(FragmentManager fm) {
+            super(fm);
+        }
+
+
+        @Override
+        public Fragment getItem(int position) {
+            if(position ==0){
+               return ss.newInstance();
+            }else if(position ==1){
+                return ss2.newInstance();
+            }else if(position ==2){
+                return ss3.newInstance();
+            }else {
+                return ss.newInstance();
+            }
+
+        }
+
+        @Override
+        public int getCount() {
+            return 4;
+        }
+    }
+
+
 
 
     public class TextViewPagerAdapter extends ObjectAtPositionPagerAdapter {
